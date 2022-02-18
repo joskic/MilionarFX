@@ -1,3 +1,2 @@
-1. ukonceni hry - prechod opravit
-2. delay mezi spravnou odpovedi a dalsi otazkou cca 3s (zelena barva)
-3. spatna odpoved - cervena barva, nabidka novy hry
+1. nova hra - nevyresetuje se
+2. vypis kolik penez jsi vyhral nefunguje

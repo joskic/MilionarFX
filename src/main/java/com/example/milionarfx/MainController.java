@@ -1,14 +1,16 @@
 package com.example.milionarfx;
 
+import javafx.animation.PauseTransition;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class HelloController implements Initializable {
+public class MainController implements Initializable {
     public Label question;
     public Button answerA;
     public Button answerB;
@@ -23,53 +25,73 @@ public class HelloController implements Initializable {
     public Button fiftyButton;
     private FXMLManager fxmlManager;
 
-
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         fxmlManager = FXMLManager.getInstance();
         questions();
     }
 
+    public void checkAnswer() {
+        CheckAnswer.checkAnswer();
+        answerA.setDisable(true);
+        answerB.setDisable(true);
+        answerC.setDisable(true);
+        answerD.setDisable(true);
+
+        switch (CheckAnswer.correctAnswer) {
+            case "A" -> answerA.setStyle("-fx-base: green; -fx-opacity: 1.0;");
+            case "B" -> answerB.setStyle("-fx-base: green; -fx-opacity: 1.0;");
+            case "C" -> answerC.setStyle("-fx-base: green; -fx-opacity: 1.0;");
+            case "D" -> answerD.setStyle("-fx-base: green; -fx-opacity: 1.0;");
+        }
+
+        PauseTransition pause = new PauseTransition(
+                Duration.seconds(2)
+        );
+        pause.setOnFinished(event -> {
+            answerA.setDisable(false);
+            answerB.setDisable(false);
+            answerC.setDisable(false);
+            answerD.setDisable(false);
+            answerA.setStyle(null);
+            answerB.setStyle(null);
+            answerC.setStyle(null);
+            answerD.setStyle(null);
+            if (CheckAnswer.correctAnswer.equals(answerFromUser)) {
+                questions();
+            } else {
+                onActionEnd();
+            }
+        });
+        pause.play();
+        if (!CheckAnswer.correctAnswer.equals(answerFromUser)) {
+            switch (answerFromUser) {
+                case "A" -> answerA.setStyle("-fx-base: red; -fx-opacity: 1.0;");
+                case "B" -> answerB.setStyle("-fx-base: red; -fx-opacity: 1.0;");
+                case "C" -> answerC.setStyle("-fx-base: red; -fx-opacity: 1.0;");
+                case "D" -> answerD.setStyle("-fx-base: red; -fx-opacity: 1.0;");
+            }
+        }
+    }
+
     public void onActionAnswerA() {
         answerFromUser = "A";
-        CheckAnswer.checkAnswer();
-        if (CheckAnswer.correctAnswer.equals(answerFromUser)) {
-            questions();
-        } else {
-            answerA.setStyle("-fx-background-color: red");
-        }
+        checkAnswer();
     }
 
     public void onActionAnswerC() {
         answerFromUser = "C";
-        CheckAnswer.checkAnswer();
-        if (CheckAnswer.correctAnswer.equals(answerFromUser)) {
-            questions();
-        } else {
-            answerC.setStyle("-fx-background-color: red");
-        }
+        checkAnswer();
     }
 
     public void onActionAnswerB() {
         answerFromUser = "B";
-        CheckAnswer.checkAnswer();
-
-        if (CheckAnswer.correctAnswer.equals(answerFromUser)) {
-            questions();
-        } else {
-            answerB.setStyle("-fx-background-color: red");
-        }
+        checkAnswer();
     }
 
     public void onActionAnswerD() {
         answerFromUser = "D";
-        CheckAnswer.checkAnswer();
-        if (CheckAnswer.correctAnswer.equals(answerFromUser)) {
-            questions();
-        } else {
-            answerD.setStyle("-fx-background-color: red");
-        }
+        checkAnswer();
     }
 
     public void questions() {
@@ -82,8 +104,8 @@ public class HelloController implements Initializable {
         answerD.setText(Game.quest[Game.random][Game.randomAnswer[3]]);
         questionInfo.setText("Otázka za " + Game.money + " CZK");
         moneyEnd.setText((Game.moneyEnd + " CZK"));
-        if (Hints.fiftyFifty == false) {
-          setVisibleAnswer();
+        if (!Hints.fiftyFifty) {
+            setVisibleAnswer();
         }
     }
 
@@ -103,28 +125,26 @@ public class HelloController implements Initializable {
         if (Game.randomAnswer[0] == 2 || Game.randomAnswer[0] == 3) {
             answerA.setText("");
             answerA.setDisable(true);
-            Hints.fiftyFifty = false;
         }
         if (Game.randomAnswer[1] == 2 || Game.randomAnswer[1] == 3) {
             answerB.setText("");
             answerB.setDisable(true);
-            Hints.fiftyFifty = false;
         }
         if (Game.randomAnswer[2] == 2 || Game.randomAnswer[2] == 3) {
             answerC.setText("");
             answerC.setDisable(true);
-            Hints.fiftyFifty = false;
         }
         if (Game.randomAnswer[3] == 2 || Game.randomAnswer[3] == 3) {
             answerD.setText("");
             answerD.setDisable(true);
-            Hints.fiftyFifty = false;
         }
         fiftyButton.setDisable(true);
+        Hints.fiftyFifty = false;
     }
 
     public void onActionNext() {
         questions();
+        Hints.nextLevel = false;
         nextButton.setDisable(true);
 
     }
@@ -147,9 +167,8 @@ public class HelloController implements Initializable {
                 answerD.setText(Game.quest[randomNumber][Game.randomAnswer[3]]);
             }
         }
+        Hints.newQuestion = false;
         changeButton.setDisable(true);
-
-        Hints.nextLevel = false;
     }
 
     public void onActionEnd() {
@@ -159,5 +178,13 @@ public class HelloController implements Initializable {
             e.printStackTrace();
         }
     }
-
+    public void reset() {
+//        Game.numbering = 0;
+//        Hints.fiftyFifty = true;
+//        Hints.nextLevel = true;
+//        Hints.newQuestion = true;
+//        questions();
+        setVisibleAnswer();
+        System.out.println("xd");
+    }
 }

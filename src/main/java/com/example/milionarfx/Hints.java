@@ -5,6 +5,7 @@ import java.util.Random;
 public class Hints extends Game {
 
     private static final Random rnd = new Random();
+    public static boolean newQuestion = true;
     public static boolean nextLevel = true;
     public static boolean fiftyFifty = true;
 

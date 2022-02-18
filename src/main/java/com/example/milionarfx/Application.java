@@ -1,19 +1,16 @@
 package com.example.milionarfx;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLManager fxmlManager = FXMLManager.getInstance();
-        fxmlManager.init(HelloApplication.class, stage);
+        fxmlManager.init(Application.class, stage);
         fxmlManager.setTitleChangeOnLoad(true);
-        fxmlManager.setView("hello-view", "JavaFX Math App");
+        fxmlManager.setView("main-view", "Chcete být milionářem?");
         fxmlManager.printViews();
         stage.show();
     }
@@ -21,6 +18,5 @@ public class HelloApplication extends Application {
     public static void main(String[] args) {
         Game.getQuestion();
         launch();
-
     }
 }
