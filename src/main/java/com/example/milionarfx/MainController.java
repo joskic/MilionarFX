@@ -184,7 +184,7 @@ public class MainController implements Initializable {
 //        Hints.nextLevel = true;
 //        Hints.newQuestion = true;
 //        questions();
-        setVisibleAnswer();
-        System.out.println("xd");
+       // setVisibleAnswer();
+       // System.out.println("xd");
     }
 }
