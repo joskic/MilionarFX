@@ -1,2 +1,0 @@
-1. nova hra - nevyresetuje se
-2. vypis kolik penez jsi vyhral nefunguje
